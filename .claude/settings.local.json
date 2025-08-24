@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir)",
+      "Bash(python:*)",
+      "Bash(.venvScriptspython.exe --version)",
+      "Bash(.venvScriptspip.exe --version)",
+      "Bash(venv\\Scripts\\python.exe:*)",
+      "Bash(mkdir:*)",
+      "Bash(xcopy:*)",
+      "Bash(copy C:devreqMasdata*.json data)",
+      "Bash(touch:*)",
+      "Bash(venv\\Scripts\\pip install:*)",
+      "Bash(.venvScriptspython.exe -c \"import langchain; print(''LangChain:'', langchain.__version__)\")",
+      "Bash(.venvScriptspython.exe -m ensurepip --upgrade)",
+      "Bash(venv\\Scripts\\python.exe -m ensurepip:*)",
+      "Bash(\"venv\\Scripts\\python.exe\" -m ensurepip --upgrade)",
+      "Bash(\"venv\\Scripts\\pip.exe\" install:*)",
+      "Bash(\"venv\\Scripts\\python.exe\" -c \"import langchain; print(''LangChain:'', langchain.__version__)\")",
+      "Bash(\"venv\\Scripts\\python.exe\" -m pytest teststest_foundation.py -v)",
+      "Bash(\"venv\\Scripts\\python.exe\" -m pytest tests -v)",
+      "Bash(\"venv\\Scripts\\python.exe\" -m pytest -v)",
+      "Bash(dir logs)",
+      "Bash(\"venv\\Scripts\\python.exe\" -c \"from src.logging.claude_code_logger import ClaudeCodeLogger; logger = ClaudeCodeLogger(); print(''Logger initialized'')\")",
+      "Bash(dir:*)",
+      "Bash(\"venv\\Scripts\\python.exe\" -m pytest teststest_agents.py::TestConstraintValidator -v)",
+      "Bash(\"venv\\Scripts\\python.exe\" -m pytest tests/test_agents.py::TestConstraintValidator -v)",
+      "Bash(\"venv\\Scripts\\python.exe\" -m pytest -xvs)",
+      "Bash(\"venv\\Scripts\\python.exe\" -m pytest --tb=no -q)",
+      "Bash(\"venv\\Scripts\\python.exe\" -m pytest tests/test_agents_refactored.py -v)",
+      "Bash(\"venv\\Scripts\\python.exe\" -c \"from src.logging.decision_logger import DecisionLogger; from src.agents.completeness import CompletenessChecker; from src.state.simple_state import SimpleState; logger = DecisionLogger(''test''); checker = CompletenessChecker(logger); state = SimpleState(session_id=''test''); state.add_requirement(''I/O'', ''Q1'', ''A1''); score = checker.check_completeness(state); print(f''Score with 1 answer: {score:.2%}''); state.add_requirement(''I/O'', ''Q2'', ''A2''); score = checker.check_completeness(state); print(f''Score with 2 answers: {score:.2%}'')\")",
+      "Bash(\"venv\\Scripts\\python.exe\" -m pytest tests/test_agents_refactored.py::TestCompletenessCheckerRefactored -v)",
+      "Bash(\"venv\\Scripts\\python.exe\":*)",
+      "Bash(del test_elicitor.py)"
+    ],
+    "deny": [],
+    "ask": [],
+    "additionalDirectories": [
+      "C:\\dev\\reqMas\\data"
+    ]
+  }
+}
