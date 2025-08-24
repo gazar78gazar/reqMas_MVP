@@ -31,6 +31,13 @@ class Orchestrator:
             reasoning.append("Starting with elicitor to gather initial requirements")
             next_agent = "elicitor"
             
+        # Check if we have requirements but haven't checked completeness
+        elif len(state.requirements) > 0 and state.completeness_score == 0.0:
+            reasoning.append(f"Have {len(state.requirements)} requirements")
+            reasoning.append("Completeness not yet checked (still 0.0)")
+            reasoning.append("Routing to completeness checker first")
+            next_agent = "completeness"
+            
         # Check completeness
         elif state.completeness_score < 0.85:
             reasoning.append(f"Completeness score: {state.completeness_score:.2f}")

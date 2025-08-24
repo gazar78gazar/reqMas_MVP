@@ -23,7 +23,7 @@ def simulate_user_session(scenario_name, user_responses):
     orchestrator = Orchestrator(logger)
     
     iteration = 0
-    max_iterations = 3
+    max_iterations = 5  # Increased to allow more rounds
     
     while iteration < max_iterations:
         iteration += 1
@@ -42,11 +42,16 @@ def simulate_user_session(scenario_name, user_responses):
             
             # Simulate user answering
             answers = {}
+            answered_count = 0
             for q in questions:  # Answer ALL questions that we have answers for
                 if q in user_responses:
                     answers[q] = user_responses[q]
-                    print(f"  Q: {q[:50]}...")
-                    print(f"  A: {user_responses[q]}")
+                    answered_count += 1
+                    print(f"  Q{answered_count}: {q[:50]}...")
+                    print(f"  A{answered_count}: {user_responses[q]}")
+            
+            if answered_count == 0:
+                print(f"  [No answers available for these questions]")
             
             # Process answers
             state = agents['elicitor'].process_answers(answers, state)
@@ -58,7 +63,7 @@ def simulate_user_session(scenario_name, user_responses):
             
             if score < 0.85:
                 gaps = agents['completeness'].identify_gaps(state)
-                print(f"Missing: {len(gaps)} fields")
+                print(f"Missing: {len(gaps)} fields - {', '.join(gaps[:3])}...")
         
         elif next_agent == "validator":
             result = agents['validator'].validate(state)
@@ -72,47 +77,79 @@ def simulate_user_session(scenario_name, user_responses):
     # Final summary
     print(f"\n--- Final Results ---")
     print(f"Total requirements collected: {len(state.requirements)}")
+    print(f"Answered requirements: {sum(1 for r in state.requirements if r.answer)}")
     print(f"Final completeness: {state.completeness_score:.1%}")
     print(f"Session log: logs/sessions/{session_id}/decisions.jsonl")
     
     return state
 
-# SCENARIO 1: Warehouse Temperature Monitoring
+# SCENARIO 1: Warehouse Temperature Monitoring - Complete responses
 warehouse_responses = {
-    # I/O Questions
+    # I/O Questions (all 7)
     "How many digital inputs do you need?": "4",
     "How many digital outputs do you need?": "2",
     "Do you need analog inputs? If yes, how many and what type (0-10V, 4-20mA)?": "Yes, 4 temperature sensors 4-20mA",
     "Do you need analog outputs? If yes, how many and what type?": "No",
-    # Environment Questions
+    "What is the maximum distance between I/O points and the controller?": "50 meters",
+    "Do you need any special I/O like RTD, thermocouple, or high-speed counters?": "RTD for temperature",
+    "What response time do you need for I/O updates (milliseconds)?": "100ms",
+    
+    # Environment Questions (all 5)
     "What is the operating temperature range?": "-10 to 40 Celsius",
     "Is this an indoor or outdoor installation?": "Indoor warehouse",
     "What is the humidity level (normal, high, condensing)?": "Normal, controlled environment",
-    # Communication Questions
-    "What communication protocols do you need (Ethernet, Modbus, Profibus, etc.)?": "Modbus TCP",
+    "Are there any vibration or shock requirements?": "No, stable environment",
+    "Is there exposure to dust, chemicals, or corrosive materials?": "Light dust only",
+    
+    # Communication Questions (all 5)
+    "What communication protocols do you need (Ethernet, Modbus, Profibus, etc.)?": "Modbus TCP and Ethernet",
     "Do you need remote access capability?": "Yes, for monitoring",
-    # Power Questions
+    "How many devices will communicate with the PLC?": "5 devices",
+    "What is the required data update rate for communications?": "1 second",
+    "Do you need redundant communication paths?": "No",
+    
+    # Power Questions (all 4)
     "What is your available power supply voltage (24VDC, 120VAC, 240VAC)?": "24VDC",
-    "What is your maximum power budget in watts?": "50W max"
+    "What is your maximum power budget in watts?": "50 watts",
+    "Do you need battery backup or UPS support?": "No",
+    "Do you need redundant power supplies?": "No"
 }
 
-# SCENARIO 2: Outdoor Industrial Control
+# SCENARIO 2: Outdoor Industrial Control - Complete responses
 outdoor_responses = {
+    # I/O Questions (all 7)
     "How many digital inputs do you need?": "16",
     "How many digital outputs do you need?": "8",
+    "Do you need analog inputs? If yes, how many and what type (0-10V, 4-20mA)?": "Yes, 8 channels 0-10V",
+    "Do you need analog outputs? If yes, how many and what type?": "Yes, 4 channels 4-20mA",
+    "What is the maximum distance between I/O points and the controller?": "200 meters",
+    "Do you need any special I/O like RTD, thermocouple, or high-speed counters?": "High-speed counters, 2 channels",
+    "What response time do you need for I/O updates (milliseconds)?": "10ms",
+    
+    # Environment Questions (all 5)
     "What is the operating temperature range?": "-40 to 85 Celsius",
     "Is this an indoor or outdoor installation?": "Outdoor, exposed to weather",
-    "What communication protocol do you need?": "EtherNet/IP",
-    "What voltage is available?": "110VAC",
-    "Do you need analog inputs? If yes, how many and what type (0-10V, 4-20mA)?": "Yes, 8 channels 0-10V",
     "What is the humidity level (normal, high, condensing)?": "High, condensing possible",
-    "Are there vibration or shock requirements?": "Yes, heavy machinery nearby",
-    "Do you need battery backup?": "Yes, 4 hours minimum"
+    "Are there any vibration or shock requirements?": "Yes, heavy machinery nearby",
+    "Is there exposure to dust, chemicals, or corrosive materials?": "Yes, industrial chemicals",
+    
+    # Communication Questions (all 5)
+    "What communication protocols do you need (Ethernet, Modbus, Profibus, etc.)?": "EtherNet/IP and Profibus",
+    "Do you need remote access capability?": "Yes, critical",
+    "How many devices will communicate with the PLC?": "20 devices",
+    "What is the required data update rate for communications?": "100ms",
+    "Do you need redundant communication paths?": "Yes, required",
+    
+    # Power Questions (all 4)
+    "What is your available power supply voltage (24VDC, 120VAC, 240VAC)?": "120VAC",
+    "What is your maximum power budget in watts?": "200 watts",
+    "Do you need battery backup or UPS support?": "Yes, 4 hours minimum",
+    "Do you need redundant power supplies?": "Yes, dual redundant"
 }
 
 # Run simulations
 if __name__ == "__main__":
-    print("=== USER SIMULATION TEST ===")
+    print("=== IMPROVED USER SIMULATION TEST ===")
     
     # Test Scenario 1
     warehouse_state = simulate_user_session(
@@ -127,8 +164,8 @@ if __name__ == "__main__":
     )
     
     # Summary
-    print("\n" + "="*60)
+    print(f"\n{'='*60}")
     print("SIMULATION SUMMARY")
-    print("="*60)
+    print('='*60)
     print(f"Warehouse: {warehouse_state.completeness_score:.1%} complete, {len(warehouse_state.requirements)} requirements")
     print(f"Outdoor: {outdoor_state.completeness_score:.1%} complete, {len(outdoor_state.requirements)} requirements")
