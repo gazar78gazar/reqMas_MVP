@@ -2,6 +2,7 @@ from typing import Dict, List, Optional
 from copy import deepcopy
 from src.state.simple_state import SimpleState
 from src.logging.decision_logger import DecisionLogger
+from src.llm.openai_service import OpenAIService
 
 
 class RequirementsElicitor:
@@ -50,6 +51,28 @@ class RequirementsElicitor:
     
     def __init__(self, logger: DecisionLogger):
         self.logger = logger
+        
+        # Initialize LLM service
+        try:
+            self.llm = OpenAIService(logger)
+            self.use_llm = True
+            logger.log_decision(
+                agent_name="elicitor",
+                input_received="Initialization",
+                reasoning_steps=["OpenAI service initialized successfully"],
+                decision_made="use_llm",
+                output_produced="Will use GPT-4o for dynamic questions"
+            )
+        except Exception as e:
+            self.llm = None
+            self.use_llm = False
+            logger.log_decision(
+                agent_name="elicitor",
+                input_received="Initialization",
+                reasoning_steps=[f"OpenAI initialization failed: {str(e)}"],
+                decision_made="use_fixed_questions",
+                output_produced="Will use fixed questions as fallback"
+            )
     
     def get_next_questions(self, state: SimpleState) -> List[str]:
         """
@@ -61,6 +84,26 @@ class RequirementsElicitor:
         Returns:
             List of next questions to ask (up to 8, 2 per category)
         """
+        # Try LLM first if available
+        if self.use_llm and self.llm:
+            try:
+                state_dict = {
+                    "requirements": state.requirements,
+                    "completeness_score": state.completeness_score
+                }
+                llm_questions = self.llm.generate_questions(state_dict)
+                if llm_questions:
+                    return llm_questions[:8]  # Max 8 questions
+            except Exception as e:
+                self.logger.log_decision(
+                    agent_name="elicitor",
+                    input_received="LLM question generation",
+                    reasoning_steps=[f"LLM error: {str(e)}"],
+                    decision_made="fallback_to_fixed",
+                    output_produced="Using fixed questions"
+                )
+        
+        # Fallback to existing fixed question logic
         reasoning = []
         next_questions = []
         asked_questions = {req.question for req in state.requirements}

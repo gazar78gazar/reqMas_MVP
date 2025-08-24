@@ -31,7 +31,8 @@
       "Bash(\"venv\\Scripts\\python.exe\" -c \"from src.logging.decision_logger import DecisionLogger; from src.agents.completeness import CompletenessChecker; from src.state.simple_state import SimpleState; logger = DecisionLogger(''test''); checker = CompletenessChecker(logger); state = SimpleState(session_id=''test''); state.add_requirement(''I/O'', ''Q1'', ''A1''); score = checker.check_completeness(state); print(f''Score with 1 answer: {score:.2%}''); state.add_requirement(''I/O'', ''Q2'', ''A2''); score = checker.check_completeness(state); print(f''Score with 2 answers: {score:.2%}'')\")",
       "Bash(\"venv\\Scripts\\python.exe\" -m pytest tests/test_agents_refactored.py::TestCompletenessCheckerRefactored -v)",
       "Bash(\"venv\\Scripts\\python.exe\":*)",
-      "Bash(del test_elicitor.py)"
+      "Bash(del test_elicitor.py)",
+      "Bash(venvScriptspip.exe install openai python-dotenv)"
     ],
     "deny": [],
     "ask": [],

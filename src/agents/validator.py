@@ -5,6 +5,7 @@ from copy import deepcopy
 from src.state.simple_state import SimpleState
 from src.logging.decision_logger import DecisionLogger
 from src.agents.validation_result import ValidationResult
+from src.llm.openai_service import OpenAIService
 
 
 class ConstraintValidator:
@@ -13,6 +14,28 @@ class ConstraintValidator:
     def __init__(self, logger: DecisionLogger):
         self.logger = logger
         self.constraints = self._load_constraints()
+        
+        # Initialize LLM service
+        try:
+            self.llm = OpenAIService(logger)
+            self.use_llm = True
+            logger.log_decision(
+                agent_name="validator",
+                input_received="Initialization",
+                reasoning_steps=["OpenAI service initialized for validation"],
+                decision_made="use_llm_validation",
+                output_produced="Will use GPT-4o for intelligent validation"
+            )
+        except Exception as e:
+            self.llm = None
+            self.use_llm = False
+            logger.log_decision(
+                agent_name="validator",
+                input_received="Initialization",
+                reasoning_steps=[f"OpenAI initialization failed: {str(e)}"],
+                decision_made="use_rule_based_validation",
+                output_produced="Will use rule-based validation as fallback"
+            )
     
     def _load_constraints(self) -> Dict:
         """Load constraint rules from JSON file"""
@@ -118,14 +141,80 @@ class ConstraintValidator:
         }
     
     def validate(self, state: SimpleState) -> ValidationResult:
-        """
-        Validate requirements against constraints
+        """Use LLM for intelligent validation"""
         
-        Returns:
-            ValidationResult with validation details
-        """
-        result = ValidationResult(is_valid=True)
         reasoning = []
+        
+        # Try LLM validation first if available
+        if self.use_llm and self.llm:
+            try:
+                # Prepare requirements for LLM
+                reqs_dict = [{"question": r.question, "answer": r.answer} 
+                             for r in state.requirements if r.answer]
+                
+                reasoning.append(f"Using GPT-4o to validate {len(reqs_dict)} requirements")
+                
+                # Get LLM validation
+                validation = self.llm.validate_requirements(reqs_dict)
+                
+                # Create ValidationResult from LLM response
+                result = ValidationResult(is_valid=validation.get('is_valid', True))
+                
+                # Add violations
+                for violation in validation.get('violations', []):
+                    result.add_violation(violation)
+                
+                # Add warnings
+                for warning in validation.get('warnings', []):
+                    result.add_warning(warning)
+                
+                # Add suggestions
+                for suggestion in validation.get('suggestions', []):
+                    result.add_suggestion(suggestion)
+                
+                confidence = validation.get('confidence', 0.5)
+                reasoning.append(f"LLM validation confidence: {confidence:.0%}")
+                reasoning.append(f"Found {len(result.violations)} violations")
+                reasoning.append(f"Found {len(result.warnings)} warnings")
+                reasoning.append(f"Generated {len(result.suggestions)} suggestions")
+                
+                # Determine decision
+                if result.is_valid:
+                    decision = "valid_with_warnings" if result.warnings else "fully_valid"
+                else:
+                    decision = "invalid_requirements"
+                
+                # Log decision
+                self.logger.log_decision(
+                    agent_name="validator",
+                    input_received=f"State with {len(state.requirements)} requirements",
+                    reasoning_steps=reasoning,
+                    decision_made=decision,
+                    output_produced=f"Valid: {result.is_valid}, Violations: {len(result.violations)}, Warnings: {len(result.warnings)}"
+                )
+                
+                # Update state decision log
+                state.add_decision(
+                    agent="validator",
+                    decision=decision,
+                    reasoning=reasoning
+                )
+                
+                return result
+                
+            except Exception as e:
+                self.logger.log_decision(
+                    agent_name="validator",
+                    input_received="LLM validation",
+                    reasoning_steps=[f"LLM error: {str(e)}", "Falling back to rule-based validation"],
+                    decision_made="fallback_to_rules",
+                    output_produced="Using rule-based validation"
+                )
+                # Fall through to rule-based validation
+        
+        # Fallback to rule-based validation
+        result = ValidationResult(is_valid=True)
+        reasoning = ["Using rule-based validation"]
         
         # Extract requirement values
         req_values = self._extract_requirement_values(state)
