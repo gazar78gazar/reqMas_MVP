@@ -221,7 +221,7 @@ async def main():
     test_scenarios = get_test_scenarios()
     
     # Run first 3 tests as examples
-    for test_case in test_scenarios[:3]:
+    for test_case in test_scenarios:
         await run_single_test(executor, test_case)
         
         # Reset state for next test

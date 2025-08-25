@@ -35,7 +35,8 @@
       "Bash(venvScriptspip.exe install openai python-dotenv)",
       "Bash(.\\venv\\Scripts\\python.exe:*)",
       "Bash(venv\\Scripts\\python.exe:*)",
-      "Bash(venv\\Scripts\\python.exe:*)"
+      "Bash(venv\\Scripts\\python.exe:*)",
+      "Bash(del:*)"
     ],
     "deny": [],
     "ask": [],

@@ -23,9 +23,14 @@ class RequirementsElicitorAgent:
         # Pattern mappings for requirement extraction
         self.io_patterns = {
             r'(\d+)\s*digital\s*input': self._extract_digital_inputs,
+            r'(\d+)\s*digital\s*inputs': self._extract_digital_inputs,  # ADD plural
             r'(\d+)\s*digital\s*output': self._extract_digital_outputs,
+            r'(\d+)\s*digital\s*outputs': self._extract_digital_outputs,  # ADD plural
             r'(\d+)\s*analog\s*input': self._extract_analog_inputs,
+            r'(\d+)\s*analog\s*inputs': self._extract_analog_inputs,  # ADD plural
             r'(\d+)\s*analog\s*output': self._extract_analog_outputs,
+            r'(\d+)\s*analog\s*outputs': self._extract_analog_outputs,  # ADD plural
+            r'(\d+)\s*digital\s*i/o': self._extract_digital_ios,
         }
         
         self.env_patterns = {
@@ -36,6 +41,8 @@ class RequirementsElicitorAgent:
             r'hazardous|atex|explosion': ['CNST_ATEX_CERTIFIED', 'CNST_CLASS1_DIV2', 'CNST_FANLESS'],
             r'extreme\s*temperature': ['CNST_TEMP_EXTENDED'],
             r'vibration|shock|mobile': ['CNST_VIBRATION_2G', 'CNST_COMPACT_FORM'],
+            r'fanless|fan-less|no\s*fan|passive\s*cooling': ['CNST_FANLESS'],
+            r'compact|din\s*rail|din-rail|small\s*form': ['CNST_COMPACT_FORM'],
         }
         
         self.power_patterns = {
@@ -60,8 +67,11 @@ class RequirementsElicitorAgent:
         self.performance_patterns = {
             r'real.?time|deterministic': ['CNST_LATENCY_MAX_1MS', 'CNST_TSN_SUPPORT'],
             r'(\d+)\s*ms\s*latency': self._extract_latency,
-            r'high.?speed|fast': ['CNST_PROCESSOR_MIN_I5'],
-            r'ai|machine\s*learning|vision': ['CNST_GPU_REQUIRED', 'CNST_PROCESSOR_MIN_I5'],
+            r'high.?speed|fast(?!.*i[57])': ['CNST_PROCESSOR_MIN_I5'],
+            r'(?:core\s*)?i7(?:\s*processor)?': ['CNST_PROCESSOR_MIN_I7'],
+            r'(?:core\s*)?i5(?:\s*processor)?': ['CNST_PROCESSOR_MIN_I5'],
+            r'gpu|graphics\s*processing|graphics\s*acceleration': ['CNST_GPU_REQUIRED'],
+            r'\bai\b|machine\s*learning|vision': ['CNST_GPU_REQUIRED', 'CNST_PROCESSOR_MIN_I5'],
             r'motion\s*control': ['CNST_LATENCY_MAX_1MS', 'CNST_TSN_SUPPORT'],
         }
     
@@ -147,21 +157,23 @@ class RequirementsElicitorAgent:
     def _extract_digital_inputs(self, match) -> List[Dict]:
         """Extract digital input requirements"""
         count = int(match.group(1))
-        if count > 64:
+        if count >= 64:
             return [{'id': 'CNST_DIGITAL_IO_MIN_64', 'value': count, 'strength': 10, 'confidence': 0.95}]
         elif count > 32:
             return [{'id': 'CNST_DIGITAL_IO_MIN_32', 'value': count, 'strength': 10, 'confidence': 0.95}]
-        elif count > 16:
+        elif count >= 16:
             return [{'id': 'CNST_DIGITAL_IO_MIN_16', 'value': count, 'strength': 10, 'confidence': 0.95}]
         return []
     
     def _extract_digital_outputs(self, match) -> List[Dict]:
         """Extract digital output requirements"""
         count = int(match.group(1))
-        if count > 64:
+        if count >= 64:
             return [{'id': 'CNST_DIGITAL_IO_MIN_64', 'value': count, 'strength': 10, 'confidence': 0.95}]
         elif count > 32:
             return [{'id': 'CNST_DIGITAL_IO_MIN_32', 'value': count, 'strength': 10, 'confidence': 0.95}]
+        elif count >= 16:
+            return [{'id': 'CNST_DIGITAL_IO_MIN_16', 'value': count, 'strength': 10, 'confidence': 0.95}]
         return []
     
     def _extract_analog_inputs(self, match) -> List[Dict]:
@@ -171,14 +183,14 @@ class RequirementsElicitorAgent:
             return [{'id': 'CNST_ANALOG_IO_MIN_24', 'value': count, 'strength': 10, 'confidence': 0.95}]
         elif count > 16:
             return [{'id': 'CNST_ANALOG_IO_MIN_16', 'value': count, 'strength': 10, 'confidence': 0.95}]
-        elif count > 8:
+        elif count >= 8:
             return [{'id': 'CNST_ANALOG_IO_MIN_8', 'value': count, 'strength': 10, 'confidence': 0.95}]
         return []
     
     def _extract_analog_outputs(self, match) -> List[Dict]:
         """Extract analog output requirements"""
         count = int(match.group(1))
-        if count > 8:
+        if count >= 8:
             return [{'id': 'CNST_ANALOG_IO_MIN_8', 'value': count, 'strength': 10, 'confidence': 0.95}]
         return []
     
@@ -189,4 +201,15 @@ class RequirementsElicitorAgent:
             return [{'id': 'CNST_LATENCY_MAX_1MS', 'value': latency_ms, 'strength': 10, 'confidence': 0.9}]
         elif latency_ms <= 10:
             return [{'id': 'CNST_LATENCY_MAX_10MS', 'value': latency_ms, 'strength': 10, 'confidence': 0.9}]
+        return []
+    
+    def _extract_digital_ios(self, match) -> List[Dict]:
+        """Extract digital I/O requirements (combined input/output)"""
+        count = int(match.group(1))
+        if count >= 64:
+            return [{'id': 'CNST_DIGITAL_IO_MIN_64', 'value': count, 'strength': 10, 'confidence': 0.95}]
+        elif count >= 32:
+            return [{'id': 'CNST_DIGITAL_IO_MIN_32', 'value': count, 'strength': 10, 'confidence': 0.95}]
+        elif count >= 16:
+            return [{'id': 'CNST_DIGITAL_IO_MIN_16', 'value': count, 'strength': 10, 'confidence': 0.95}]
         return []
