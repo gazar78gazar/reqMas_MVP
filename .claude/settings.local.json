@@ -32,7 +32,10 @@
       "Bash(\"venv\\Scripts\\python.exe\" -m pytest tests/test_agents_refactored.py::TestCompletenessCheckerRefactored -v)",
       "Bash(\"venv\\Scripts\\python.exe\":*)",
       "Bash(del test_elicitor.py)",
-      "Bash(venvScriptspip.exe install openai python-dotenv)"
+      "Bash(venvScriptspip.exe install openai python-dotenv)",
+      "Bash(.\\venv\\Scripts\\python.exe:*)",
+      "Bash(venv\\Scripts\\python.exe:*)",
+      "Bash(venv\\Scripts\\python.exe:*)"
     ],
     "deny": [],
     "ask": [],

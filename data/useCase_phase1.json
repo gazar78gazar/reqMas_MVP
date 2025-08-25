@@ -1,0 +1,471 @@
+{
+  "metadata": {
+    "version": "1.0-phase1",
+    "created": "2025-01-30",
+    "description": "Phase 1 simplified requirement hierarchy for Requirements MAS",
+    "total_use_cases": 12,
+    "total_sub_requirements": 21,
+    "total_sub_sub_requirements": 106,
+    "total_common_sub_requirements": 30
+  },
+
+  "use_cases": {
+    "UC1": {
+      "name": "Power Substation Management and Control",
+      "domain": "Energy & Utilities",
+      "safety_critical": true,
+      "sub_requirements": ["SR1_1", "SR1_2"]
+    },
+    "UC2": {
+      "name": "PV/Solar Array Monitoring and Control",
+      "domain": "Renewable Energy",
+      "safety_critical": false,
+      "sub_requirements": ["SR2_1", "SR2_2"]
+    },
+    "UC3": {
+      "name": "Motion Control Systems",
+      "domain": "Manufacturing",
+      "safety_critical": true,
+      "sub_requirements": ["SR3_1", "SR3_2"]
+    },
+    "UC4": {
+      "name": "Quality Control and Inspection Systems",
+      "domain": "Manufacturing",
+      "safety_critical": false,
+      "sub_requirements": ["SR4_1", "SR4_2"]
+    },
+    "UC5": {
+      "name": "Industrial Automation and OT Machinery Monitoring",
+      "domain": "Manufacturing",
+      "safety_critical": false,
+      "sub_requirements": ["SR5_1", "SR5_2"]
+    },
+    "UC6": {
+      "name": "Water Treatment and Environmental Monitoring",
+      "domain": "Water & Environment",
+      "safety_critical": true,
+      "sub_requirements": ["SR6_1", "SR6_2"]
+    },
+    "UC7": {
+      "name": "Transportation and Logistics",
+      "domain": "Transportation",
+      "safety_critical": true,
+      "sub_requirements": ["SR7_1", "SR7_2"]
+    },
+    "UC8": {
+      "name": "Building Automation and HVAC",
+      "domain": "Smart Buildings",
+      "safety_critical": false,
+      "sub_requirements": ["SR8_1"]
+    },
+    "UC9": {
+      "name": "Food and Beverage Manufacturing",
+      "domain": "Food & Beverage",
+      "safety_critical": true,
+      "sub_requirements": ["SR9_1"]
+    },
+    "UC10": {
+      "name": "Mining and Minerals Extraction",
+      "domain": "Mining",
+      "safety_critical": true,
+      "sub_requirements": ["SR10_1", "SR10_2"]
+    },
+    "UC11": {
+      "name": "IoT Edge Computing",
+      "domain": "IoT & Edge",
+      "safety_critical": false,
+      "sub_requirements": ["SR11_1", "SR11_2"]
+    },
+    "UC12": {
+      "name": "Test and Measurement Systems",
+      "domain": "Testing",
+      "safety_critical": false,
+      "sub_requirements": ["SR12_1", "SR12_2"]
+    }
+  },
+
+  "sub_requirements": {
+    "SR1_1": {
+      "name": "Substation Monitoring",
+      "use_case": "UC1",
+      "sub_sub_requirements": ["SSR1_1_1", "SSR1_1_2", "SSR1_1_3", "SSR1_1_4"]
+    },
+    "SR1_2": {
+      "name": "Grid Control",
+      "use_case": "UC1",
+      "sub_sub_requirements": ["SSR1_2_1", "SSR1_2_2"]
+    },
+    "SR2_1": {
+      "name": "Solar Panel Monitoring",
+      "use_case": "UC2",
+      "sub_sub_requirements": ["SSR2_1_1", "SSR2_1_2", "SSR2_1_3", "SSR2_1_4"]
+    },
+    "SR2_2": {
+      "name": "Solar Energy Management",
+      "use_case": "UC2",
+      "sub_sub_requirements": ["SSR2_2_1", "SSR2_2_2"]
+    },
+    "SR3_1": {
+      "name": "Multi-Axis Control",
+      "use_case": "UC3",
+      "sub_sub_requirements": ["SSR3_1_1", "SSR3_1_2", "SSR3_1_3"]
+    },
+    "SR3_2": {
+      "name": "Robot Control",
+      "use_case": "UC3",
+      "sub_sub_requirements": ["SSR3_2_1", "SSR3_2_2"]
+    },
+    "SR4_1": {
+      "name": "Visual Inspection",
+      "use_case": "UC4",
+      "sub_sub_requirements": ["SSR4_1_1", "SSR4_1_2", "SSR4_1_3", "SSR4_1_4"]
+    },
+    "SR4_2": {
+      "name": "Measurement Systems",
+      "use_case": "UC4",
+      "sub_sub_requirements": ["SSR4_2_1", "SSR4_2_2"]
+    },
+    "SR5_1": {
+      "name": "Machine Communication",
+      "use_case": "UC5",
+      "sub_sub_requirements": ["SSR5_1_1", "SSR5_1_2"]
+    },
+    "SR5_2": {
+      "name": "Condition Monitoring",
+      "use_case": "UC5",
+      "sub_sub_requirements": ["SSR5_2_1", "SSR5_2_2", "SSR5_2_3"]
+    },
+    "SR6_1": {
+      "name": "Water Quality Monitoring",
+      "use_case": "UC6",
+      "sub_sub_requirements": ["SSR6_1_1", "SSR6_1_2", "SSR6_1_3"]
+    },
+    "SR6_2": {
+      "name": "Remote Site Operation",
+      "use_case": "UC6",
+      "sub_sub_requirements": ["SSR6_2_1", "SSR6_2_2"]
+    },
+    "SR7_1": {
+      "name": "Vehicle Tracking",
+      "use_case": "UC7",
+      "sub_sub_requirements": ["SSR7_1_1", "SSR7_1_2", "SSR7_1_3"]
+    },
+    "SR7_2": {
+      "name": "Mobile Platform",
+      "use_case": "UC7",
+      "sub_sub_requirements": ["SSR7_2_1", "SSR7_2_2"]
+    },
+    "SR8_1": {
+      "name": "HVAC Control",
+      "use_case": "UC8",
+      "sub_sub_requirements": ["SSR8_1_1", "SSR8_1_2", "SSR8_1_3"]
+    },
+    "SR9_1": {
+      "name": "Food Processing",
+      "use_case": "UC9",
+      "sub_sub_requirements": ["SSR9_1_1", "SSR9_1_2", "SSR9_1_3", "SSR9_1_4"]
+    },
+    "SR10_1": {
+      "name": "Mining Site Management",
+      "use_case": "UC10",
+      "sub_sub_requirements": ["SSR10_1_1", "SSR10_1_2", "SSR10_1_3"]
+    },
+    "SR10_2": {
+      "name": "Hazardous Area Operation",
+      "use_case": "UC10",
+      "sub_sub_requirements": ["SSR10_2_1", "SSR10_2_2"]
+    },
+    "SR11_1": {
+      "name": "Edge Analytics",
+      "use_case": "UC11",
+      "sub_sub_requirements": ["SSR11_1_1", "SSR11_1_2"]
+    },
+    "SR11_2": {
+      "name": "AI Processing",
+      "use_case": "UC11",
+      "sub_sub_requirements": ["SSR11_2_1", "SSR11_2_2"]
+    },
+    "SR12_1": {
+      "name": "Data Acquisition",
+      "use_case": "UC12",
+      "sub_sub_requirements": ["SSR12_1_1", "SSR12_1_2", "SSR12_1_3"]
+    },
+    "SR12_2": {
+      "name": "Instrument Control",
+      "use_case": "UC12",
+      "sub_sub_requirements": ["SSR12_2_1", "SSR12_2_2"]
+    }
+  },
+
+  "common_sub_requirements": {
+    "CSR_REAL_TIME_1MS": {
+      "name": "Real-time Control",
+      "description": "Sub-millisecond deterministic response",
+      "applies_to_ssrs": ["SSR3_1_1", "SSR3_2_1", "SSR7_1_2"],
+      "implied_constraints": [
+        {
+          "constraint_id": "CNST_LATENCY_MAX_1MS",
+          "strength": "mandatory",
+          "strength_score": 10
+        },
+        {
+          "constraint_id": "CNST_TSN_SUPPORT",
+          "strength": "mandatory",
+          "strength_score": 10
+        },
+        {
+          "constraint_id": "CNST_GIGABIT_ETHERNET",
+          "strength": "mandatory",
+          "strength_score": 10
+        }
+      ],
+      "compatible_components": ["UNO-238v2", "UNO-148v2"]
+    },
+
+    "CSR_PROCESSING_POWER_HIGH": {
+      "name": "High Processing Power",
+      "description": "Core i5/i7 for complex calculations",
+      "applies_to_ssrs": ["SSR3_1_1", "SSR3_1_2", "SSR11_2_1"],
+      "implied_constraints": [
+        {
+          "constraint_id": "CNST_PROCESSOR_MIN_I5",
+          "strength": "mandatory",
+          "strength_score": 10
+        },
+        {
+          "constraint_id": "CNST_MEMORY_16GB",
+          "strength": "mandatory",
+          "strength_score": 10
+        }
+      ],
+      "compatible_components": ["UNO-238v2", "UNO-437v2"]
+    },
+
+    "CSR_AI_PROCESSING": {
+      "name": "AI/ML Processing",
+      "description": "GPU acceleration for AI workloads",
+      "applies_to_ssrs": ["SSR4_1_3", "SSR11_2_1", "SSR11_2_2"],
+      "implied_constraints": [
+        {
+          "constraint_id": "CNST_GPU_REQUIRED",
+          "strength": "mandatory",
+          "strength_score": 10
+        },
+        {
+          "constraint_id": "CNST_PROCESSOR_MIN_I5",
+          "strength": "mandatory",
+          "strength_score": 10
+        },
+        {
+          "constraint_id": "CNST_MEMORY_32GB",
+          "strength": "recommended",
+          "strength_score": 4
+        }
+      ],
+      "compatible_components": ["UNO-438v2"]
+    },
+
+    "CSR_REMOTE_CONNECTIVITY": {
+      "name": "Remote Site Connectivity",
+      "description": "Cellular/wireless for remote locations",
+      "applies_to_ssrs": ["SSR2_1_4", "SSR6_2_1", "SSR10_1_1"],
+      "implied_constraints": [
+        {
+          "constraint_id": "CNST_LTE",
+          "strength": "mandatory",
+          "strength_score": 10
+        },
+        {
+          "constraint_id": "CNST_VPN",
+          "strength": "recommended",
+          "strength_score": 4
+        }
+      ],
+      "compatible_components": ["UNO-238v2", "UNO-148v2", "ADAM-3600"]
+    },
+
+    "CSR_SOLAR_COMPATIBLE": {
+      "name": "Solar/Battery Power",
+      "description": "Ultra-low power for off-grid",
+      "applies_to_ssrs": ["SSR2_1_1", "SSR2_1_2", "SSR6_2_1"],
+      "implied_constraints": [
+        {
+          "constraint_id": "CNST_POWER_MAX_10W",
+          "strength": "mandatory",
+          "strength_score": 10
+        },
+        {
+          "constraint_id": "CNST_FANLESS",
+          "strength": "mandatory",
+          "strength_score": 10
+        }
+      ],
+      "compatible_components": ["ADAM-3600", "WISE-4600"]
+    },
+
+    "CSR_HAZARDOUS_AREA": {
+      "name": "Hazardous Area Operation",
+      "description": "Explosion-proof design",
+      "applies_to_ssrs": ["SSR10_2_1", "SSR10_2_2"],
+      "implied_constraints": [
+        {
+          "constraint_id": "CNST_ATEX_CERTIFIED",
+          "strength": "mandatory",
+          "strength_score": 10
+        },
+        {
+          "constraint_id": "CNST_CLASS1_DIV2",
+          "strength": "mandatory",
+          "strength_score": 10
+        },
+        {
+          "constraint_id": "CNST_FANLESS",
+          "strength": "mandatory",
+          "strength_score": 10
+        }
+      ],
+      "compatible_components": ["ATEX-certified-models"]
+    },
+
+    "CSR_OUTDOOR_HARDENED": {
+      "name": "Outdoor Environmental Protection",
+      "description": "Ruggedized for harsh environments",
+      "applies_to_ssrs": ["SSR1_1_3", "SSR2_1_4", "SSR7_2_1"],
+      "implied_constraints": [
+        {
+          "constraint_id": "CNST_TEMP_EXTENDED",
+          "strength": "mandatory",
+          "strength_score": 10
+        },
+        {
+          "constraint_id": "CNST_IP54",
+          "strength": "mandatory",
+          "strength_score": 10
+        },
+        {
+          "constraint_id": "CNST_FANLESS",
+          "strength": "recommended",
+          "strength_score": 4
+        }
+      ],
+      "compatible_components": ["UNO-137v2", "UNO-148v2"]
+    },
+
+    "CSR_HIGH_IO_DENSITY": {
+      "name": "High I/O Channel Count",
+      "description": "Large number of I/O points",
+      "applies_to_ssrs": ["SSR1_1_1", "SSR5_1_1"],
+      "implied_constraints": [
+        {
+          "constraint_id": "CNST_DIGITAL_IO_MIN_64",
+          "strength": "mandatory",
+          "strength_score": 10
+        },
+        {
+          "constraint_id": "CNST_ANALOG_IO_MIN_16",
+          "strength": "recommended",
+          "strength_score": 4
+        }
+      ],
+      "compatible_components": ["UNO-238v2", "UNO-437v2"]
+    },
+
+    "CSR_INDUSTRIAL_PROTOCOLS": {
+      "name": "Industrial Communication",
+      "description": "Standard industrial protocols",
+      "applies_to_ssrs": ["SSR5_1_1", "SSR5_1_2", "SSR8_1_1"],
+      "implied_constraints": [
+        {
+          "constraint_id": "CNST_MODBUS_TCP",
+          "strength": "mandatory",
+          "strength_score": 10
+        },
+        {
+          "constraint_id": "CNST_OPCUA",
+          "strength": "recommended",
+          "strength_score": 4
+        }
+      ],
+      "compatible_components": ["UNO-238v2", "UNO-148v2", "UNO-437v2"]
+    },
+
+    "CSR_HYGIENIC_DESIGN": {
+      "name": "Food-Grade Hygiene",
+      "description": "Washdown and sanitary requirements",
+      "applies_to_ssrs": ["SSR9_1_1", "SSR9_1_2"],
+      "implied_constraints": [
+        {
+          "constraint_id": "CNST_IP69K",
+          "strength": "mandatory",
+          "strength_score": 10
+        }
+      ],
+      "compatible_components": ["Hygienic-certified-models"]
+    }
+  },
+
+  "mutex_constraints": {
+    "power_performance": [
+      {
+        "constraint_a": "CNST_POWER_MAX_10W",
+        "constraint_b": "CNST_PROCESSOR_MIN_I7",
+        "resolution": "Choose between low power or high performance"
+      },
+      {
+        "constraint_a": "CNST_POWER_MAX_10W",
+        "constraint_b": "CNST_PROCESSOR_MIN_I5",
+        "resolution": "Choose between low power or processing capability"
+      },
+      {
+        "constraint_a": "CNST_POWER_MAX_10W",
+        "constraint_b": "CNST_GPU_REQUIRED",
+        "resolution": "GPU requires more than 10W power"
+      },
+      {
+        "constraint_a": "CNST_FANLESS",
+        "constraint_b": "CNST_PROCESSOR_MIN_I7",
+        "resolution": "i7 requires active cooling"
+      }
+    ],
+    "latency_connectivity": [
+      {
+        "constraint_a": "CNST_LATENCY_MAX_1MS",
+        "constraint_b": "CNST_WIFI",
+        "resolution": "WiFi cannot guarantee 1ms latency"
+      },
+      {
+        "constraint_a": "CNST_LATENCY_MAX_1MS",
+        "constraint_b": "CNST_LTE",
+        "resolution": "Cellular cannot guarantee 1ms latency"
+      }
+    ],
+    "form_factor": [
+      {
+        "constraint_a": "CNST_COMPACT_FORM",
+        "constraint_b": "CNST_DIGITAL_IO_MIN_64",
+        "resolution": "Compact units limited to 32 digital I/O"
+      },
+      {
+        "constraint_a": "CNST_COMPACT_FORM",
+        "constraint_b": "CNST_ANALOG_IO_MIN_24",
+        "resolution": "Compact units limited to 16 analog I/O"
+      }
+    ]
+  },
+
+  "phase1_configuration": {
+    "auto_resolution_thresholds": {
+      "use_case_confidence": 0.8,
+      "mutex_auto_resolve": 0.7,
+      "completion_threshold": 0.7
+    },
+    "supported_agents": [
+      "requirements_elicitor",
+      "specification_mapper",
+      "resolution_agent",
+      "constraint_validator"
+    ],
+    "parallel_timeout_seconds": 3,
+    "max_iterations": 10
+  }
+}
